@@ -1,0 +1,117 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'jacoco'
+apply plugin: 'com.github.johnrengelman.shadow'
+def swaggerVersion = '1.5.8'
+def versionJersey = '2.22.2'
+buildscript {
+  repositories {
+    jcenter()
+  }
+
+  dependencies {
+    classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.4'
+    classpath 'org.ajoberstar:gradle-git:0.7.0' 
+  }
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+sourceSets.main.java.srcDirs = ['dependencies/public-transport-enabler/enabler/src', 'src']
+sourceSets.main.resources.srcDirs = ['conf/logs']
+sourceSets.test.java.srcDirs = ['test']
+
+
+import org.ajoberstar.grgit.*
+
+task clone{
+ //This task will download public-transport-enabler project from git 
+ 
+ def localPath='dependencies/public-transport-enabler/'
+ //if public-transport-enabler is already exist  in the dependencies folder Task wont download it again
+ def f = file(localPath)
+ if (!f.exists()) {
+  	Grgit.clone(dir: file(localPath), uri: 'https://github.com/schildbach/public-transport-enabler.git')
+  }
+}
+
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'ai.susi.SusiServer'
+    }
+}
+
+shadowJar {
+  mergeServiceFiles()
+}
+
+assemble.dependsOn shadowJar
+//compileJava run only after the clone task is executed
+compileJava.dependsOn clone
+
+repositories {
+  mavenCentral()
+  maven { url 'https://github.com/broadbear/maven-repo/raw/master' }
+
+}
+
+dependencies {
+  compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.+'
+  compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.+'
+  compile group: 'com.google.guava', name: 'guava', version: '18.+'
+  compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.+'
+  compile group: 'org.apache.httpcomponents', name: 'httpcore', version: '4.+'
+  compile group: 'org.apache.httpcomponents', name: 'httpmime', version: '4.+'
+  compile group: 'com.sun.mail', name: 'javax.mail', version: '1.+'
+  compile group: 'org.eclipse.jetty', name: 'jetty-rewrite', version: '9.3.+'
+  compile group: 'org.eclipse.jetty', name: 'jetty-servlet', version: '9.3.+'
+  compile group: 'org.eclipse.jetty', name: 'jetty-webapp', version: '9.3.+'
+  compile group: 'org.joda', name: 'joda-convert', version: '1.+'
+  compile group: 'joda-time', name: 'joda-time', version: '2.+'
+  compile group: 'org.jsoup', name: 'jsoup', version: '1.+'
+  compile group: 'junit', name: 'junit', version: '4.+'
+  compile group: 'rome', name: 'rome', version: '1.+'
+  compile group: 'it.unibo.alice.tuprolog', name: 'tuprolog', version: '3.+'
+  compile group: 'com.google.code.findbugs', name: 'jsr305', version: '3.+'
+  compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.+'
+  compile group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: '1.+'
+  compile group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.+'
+  compile group: 'jfree', name: 'jfreechart', version: '1.+'
+  compile group: 'com.wordnik', name: 'swagger-core_2.9.1', version: '1.1-SNAPSHOT.120119'
+  compile 'org.eclipse.jgit:org.eclipse.jgit:4.6.1.201703071140-r'
+  compile 'org.broadbear:link-preview:1.2'
+  compile group: 'io.swagger', name: 'swagger-annotations',version: swaggerVersion
+  compile group: 'io.swagger', name: 'swagger-core', version: swaggerVersion
+  compile group: 'io.swagger', name: 'swagger-jersey2-jaxrs', version: swaggerVersion
+  compile group: 'io.swagger', name: 'swagger-models', version: swaggerVersion
+  compile group: 'org.glassfish.jersey.core', name: 'jersey-server', version: versionJersey
+  compile group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet-core', version: versionJersey
+  compile group: 'org.webjars', name: 'swagger-ui', version: '2.1.4'
+  compile group: 'commons-io', name: 'commons-io', version: '2.4'
+  // the following is required for public-transport-enabler
+  compile 'com.squareup.okhttp3:okhttp:3.8.0'
+  compile 'com.squareup.okhttp3:logging-interceptor:3.8.0'
+  compile 'net.sf.kxml:kxml2:2.3.0' // provided by Android
+}
+
+task stage(dependsOn: ['assemble', 'clean'])
+assemble.mustRunAfter clean
+
+tasks.withType(Javadoc) {
+  options.addBooleanOption('Xdoclint:none', true)
+}
+
+task start(type: JavaExec, dependsOn: classes) {
+  main = 'ai.susi.SusiServer'
+  classpath sourceSets.main.runtimeClasspath
+  classpath configurations.runtime
+}
+
+jacocoTestReport {
+  reports {
+    xml.enabled true
+    html.enabled false
+  }
+}
