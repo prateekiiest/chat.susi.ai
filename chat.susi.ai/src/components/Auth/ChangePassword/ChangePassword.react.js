@@ -14,7 +14,6 @@ import Translate from '../../Translate/Translate.react';
 
 const cookies = new Cookies();
 
-
 export default class ChangePassword extends Component {
     constructor(props) {
         super(props);
