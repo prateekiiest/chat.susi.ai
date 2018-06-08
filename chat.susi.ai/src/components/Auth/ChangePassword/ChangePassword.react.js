@@ -370,6 +370,7 @@ export default class ChangePassword extends Component {
     };
 }
 
+
 ChangePassword.propTypes = {
     history: PropTypes.object,
     settings: PropTypes.object
