@@ -24,7 +24,13 @@ cache:
   directories:
   - $HOME/sunpy/data
 
+python:
+    - 2.7
+    - 3.5
+    - 3.6
+
 # Configure the build environment. Global varibles are defined for all configurations.
+
 env:
     global:
         - COLUMNS=180
@@ -35,9 +41,13 @@ env:
         - SETUP_CMD='test --coverage'
         - CONDA_CHANNELS='sunpy'
         - CONDA_DEPENDENCIES='openjpeg Cython jinja2 scipy matplotlib mock requests beautifulsoup4 sqlalchemy scikit-image pytest-mock lxml pyyaml pandas nomkl pytest-astropy suds-jurko glymur'
-        - PIP_DEPENDENCIES='git+https://github.com/sphinx-gallery/sphinx-gallery sphinx-astropy pytest-sugar pytest-rerunfailures pytest-cov sunpy-sphinx-theme hypothesis'
+        - PIP_DEPENDENCIES='git+https://github.com/sphinx-gallery/sphinx-gallery pytest-sugar pytest-rerunfailures pytest-cov sunpy-sphinx-theme hypothesis'
         - EVENT_TYPE='push pull_request cron'
         - MPLBACKEND='agg'
+
+
+    matrix:
+        - SETUP_CMD='egg_info'
 
 stages:
    # Do the install jobs and one offline test, it will not proceed if any fail
@@ -82,12 +92,12 @@ matrix:
          # Python 2.7 figure tests
          - python: 2.7
            stage: Comprehensive tests
-           env: SETUP_CMD='test --figure-only --coverage' CONDA_DEPENDENCIES=''
+           env: SETUP_CMD='test --figure --coverage' CONDA_DEPENDENCIES=''
 
          # Python 3.5 figure tests
          - python: 3.5
            stage: Comprehensive tests
-           env: SETUP_CMD='test --figure-only --coverage' CONDA_DEPENDENCIES=''
+           env: SETUP_CMD='test --figure --coverage' CONDA_DEPENDENCIES=''
 
          # Python 3.5 with astropy 2
          - python: 3.5
@@ -114,7 +124,7 @@ matrix:
 
          - python: 3.5
            stage: Cron tests
-           env: SETUP_CMD='test --figure-only' ASTROPY_VERSION='dev'
+           env: SETUP_CMD='test --figure' ASTROPY_VERSION='dev'
                 CONDA_DEPENDENCIES='astropy'
 
          # Previous numpy is tested on an older python version

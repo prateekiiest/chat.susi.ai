@@ -1,4 +1,0 @@
-
--r docs.txt
-
-sphinx>=1.7

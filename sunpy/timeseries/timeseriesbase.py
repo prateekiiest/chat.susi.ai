@@ -68,27 +68,25 @@ class GenericTimeSeries:
     """
     A generic time series object.
 
-    Parameters
-    ----------
-    data : `~pandas.DataFrame`
-        A pandas DataFrame representing one or more fields as a function
-        of time.
-    meta : `~sunpy.timeseries.metadata.TimeSeriesMetaData`, optional
-        The metadata giving details about the time series data/instrument.
-    units : dict, optional
-        A mapping from column names in *data* to the physical units of
-        that column.
-
     Attributes
     ----------
-    data : `~pandas.DataFrame`
-        A pandas DataFrame representing one or more fields as a function
-        of time.
     meta : `~sunpy.timeseries.metadata.TimeSeriesMetaData`
         The metadata giving details about the time series data/instrument.
-    units : dict
-        A mapping from column names in *data* to the physical units of
-        that column.
+    data : `~pandas.DataFrame`
+        An pandas DataFrame prepresenting one or more fields as a function of time.
+
+    Parameters
+    ----------------
+    filename: `str` or File
+        A file to read.
+    source: `str`
+        A string identifier for a registered subclass, matched by that
+         subclasses `_is_source_for` method.
+    concatenate :  `bool`
+        Concatenate all files into one TimeSeries object if True, or return
+        one TimeSeries for each file if False.
+
+    All other keywords are passed to _is_source_for and then __init__.
 
     Examples
     --------
@@ -105,7 +103,7 @@ class GenericTimeSeries:
 
     References
     ----------
-    * `Pandas Documentation <https://pandas.pydata.org/pandas-docs/stable/>`_
+    * `Pandas Documentation <http://pandas.pydata.org/pandas-docs/dev/dsintro.html>`_
 
     """
 
@@ -142,27 +140,23 @@ class GenericTimeSeries:
 
     @property
     def source(self):
-        """
-        A string/object used to specify the source class of the TimeSeries.
-        """
+        """Returns a string/object used to specify the source class of the TimeSeries."""
         return self._source
 
     @property
     def columns(self):
-        """A list of all the names of the columns in the data."""
+        """Returns a list of all the names of the columns in the data."""
         return list(self.data.columns.values)
 
     @property
     def index(self):
-        """The time index of the data."""
+        """Return the time index of the data."""
         return self.data.index
 
     @property
     def time_range(self):
-        """
-        The start and end times of the TimeSeries as a `~sunpy.time.TimeRange`
-        object
-        """
+        """Returns the start and end times of the TimeSeries as a `~sunpy.time.TimeRange`
+        object"""
         return TimeRange(self.data.index.min(), self.data.index.max())
 
 # #### Data Access, Selection and Organisation Methods #### #

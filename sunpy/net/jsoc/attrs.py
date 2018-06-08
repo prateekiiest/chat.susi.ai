@@ -12,7 +12,8 @@ class Series(_VSOSimpleAttr):
     """
     The JSOC Series to Download.
 
-    This is the list of `Series <http://jsoc.stanford.edu/JsocSeries_DataProducts_map.html>_`.
+    See `this<http://jsoc.stanford.edu/JsocSeries_DataProducts_map.html>_`
+    for a list of series'.
     """
     pass
 
