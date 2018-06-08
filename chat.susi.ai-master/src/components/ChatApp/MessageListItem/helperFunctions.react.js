@@ -99,6 +99,7 @@ export function renderMessageFooter(message,latestMsgID, isLastAction){
         }
       </li>
       {statusIndicator}
+      
       <span style="font-family: Arial Unicode MS, Lucida Grande">
        ✅
      </span>
