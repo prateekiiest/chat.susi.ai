@@ -1,0 +1,23 @@
+sudo: required
+dist: trusty
+language: node_js
+
+node_js:
+  - 6
+
+cache:
+  directories:
+    - node_modules
+
+matrix:
+  include:
+    # Run npm tests and get code coverage matrix
+    - script:
+      - npm test
+      - bash <(curl -s https://codecov.io/bash)
+
+    # Deploy PR to surge
+    - script: bash ./surge_deploy.sh
+
+    # Deploy on non-prs
+    - script: bash ./deploy.sh

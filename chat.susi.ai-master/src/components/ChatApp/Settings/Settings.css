@@ -1,0 +1,139 @@
+.tabStyle{
+  height: 550px;
+  margin-top: 20px;
+  display: inline-block;
+}
+
+.settings-container{
+  width: 100%;
+  height: 100vh;
+    background:  rgb(242, 242, 242);
+}
+
+.settings-list{
+    padding: 0px 0px;
+    user-select: none;
+    width: 100%;
+}
+
+
+.settings-list-dropdown{
+    padding: 0px 0px;
+    user-select: none;
+    width: 100%;
+    display: none;
+}
+
+.siteTitle {
+    height: 25px;
+    margin-top: 21px;
+    display: block;
+}
+
+.settingsMenuButton {
+    margin-bottom: 16px;
+    width: 100;
+}
+
+.settingsBtns {
+  top: 5px;
+  margin-left: 20px ;
+}
+
+.settings-toggle {
+  max-width: 5%;
+  float: left;
+}
+
+.settingsSubmit{
+      text-align: left ;
+      margin-left: 30px;
+}
+
+.setting-item{
+  width: 97%;
+}
+.settingMenu {
+
+    max-width: none;
+    padding: 50px 0px 50px 0px;
+    position: relative;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    display: -ms-flexbox;
+    display: -webkit-box;
+    display: flex;
+    -ms-flex-pack: justify;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-flow: row wrap;
+    flex-flow: row wrap;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    margin: 0 auto;
+    max-width: 85%;
+    width: 935px;
+}
+
+.leftMenu {
+  width: 35%;
+  height:620px;
+  background-color: #fff;
+}
+
+.rightMenu {
+  height: 620px;
+  width: 64%;
+  background-color: #fff;
+}
+
+.break-line{
+  margin: 0px ;
+  width: 100% ;
+  height: 1px ;
+  border: 0 none ;
+  background-color : rgb(242, 242, 242) ;
+}
+
+.right-chevron{
+  margin-top: 10px;
+  position: absolute;
+  right: 10px;
+}
+
+.email-field:hover{
+    cursor: not-allowed;
+}
+
+
+@media only screen and (max-width: 1060px){
+  .settings-list-dropdown{
+    display: inline-block;
+  }
+
+  .settings-list{
+    display: none;
+  }
+
+  .settings-container{
+    height: 100vh;
+  }
+
+  .leftMenu {
+    width: 100%;
+  }
+
+  .tabStyle{
+  height: auto;
+}
+
+  .rightMenu {
+    height: 480px;
+    width: 100%;
+  }
+
+  .setting-item{
+  width: 100%;
+}
+}
